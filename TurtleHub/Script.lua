@@ -1,29 +1,18 @@
-local OrionLib = loadstring(game:HttpGet("https://pastebin.com/raw/NMEHkVTb"))()
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/Uub92rmN"))()
 
-local Window = OrionLib:MakeWindow({Name = "VIP Turtle Hub V3", HidePremium = false, SaveConfig = true, ConfigFolder = "TurtleFi"})
 
-local T1 = Window:MakeTab({
-Name = "farm",
-Icon = "rbxassetid://",
-PremiumOnly = false
-})
+local Window = library:AddWindow("Orin - Cheat",
+    {
+        main_color = Color3.fromRGB(0, 128, 0),
+        min_size = Vector2.new(373, 433),
+        toggle_key = Enum.KeyCode.RightShift,
+    })
+    
+local T1 = Window:AddTab("Farm")
+local T2 = Window:AddTab("Gems shop")
+local T3 = Window:AddTab("Misc")
 
-local T2 = Window:MakeTab({
-Name = "Gems shop",
-Icon = "rbxassetid://",
-PremiumOnly = false
-})
-
-local T3 = Window:MakeTab({
-Name = "Misc",
-Icon = "rbxassetid://",
-PremiumOnly = false
-})
-
-T1:AddToggle({
-    Name = "Auto place block",
-    Default = false,
-    Callback = function(Value)
+T1:AddSwitch("auto place block", function(Value)
         _G.Block = Value
         
         while _G.Block do
@@ -31,13 +20,9 @@ T1:AddToggle({
         wait(0)
         game:GetService("ReplicatedStorage").Remotes.PlaceBlock:FireServer()
         end
-   end    
-})
+   end)
 
-T1:AddToggle({
-    Name = "Auto Rebirth",
-    Default = false,
-    Callback = function(Value)
+T1:AddSwitch("Auto rebirth", function(Value)
         _G.Rebirth = Value
         
         while _G.Rebirth do
@@ -49,13 +34,9 @@ T1:AddToggle({
 
 game:GetService("ReplicatedStorage").Remotes.Rebirth:InvokeServer(unpack(args))
         end
-   end    
-})
+   end)
 
-T3:AddToggle({
-    Name = "Auto equip best (pet)",
-    Default = false,
-    Callback = function(Value)
+T3:AddSwitch("auto equip best (PET)", function(Value)
         _G.BestPet = Value
         
         while _G.BestPet do
@@ -67,13 +48,9 @@ T3:AddToggle({
 
 game:GetService("ReplicatedStorage").RemoteEvents.PetActionRequest:InvokeServer(unpack(args))
         end
-   end    
-})
+   end)
 
-T3:AddToggle({
-    Name = "Spam trade 😂",
-    Default = false,
-    Callback = function(Value)
+T3:AddSwitch("spam trade 😂", function(Value)
         _G.Trade = Value
         
         while _G.Trade do
@@ -83,29 +60,22 @@ T3:AddToggle({
         game:GetService("ReplicatedStorage").Remotes.TradeNotification:FireServer(v.Name)
         end
         end
-   end    
-})
+   end)
 
-T3:AddButton({
-   Name = "Teleport to home",
-   Callback = function()
+T3:AddButton("Teleport", function()
        game:GetService("ReplicatedStorage").Remotes.TeleportHome:InvokeServer()
-  end    
-})
+  end)
 
-T2:AddDropdown({
-   Name = "select item",
-   Default = "1",
-   Options = {"GemEgg", "SpeedBoost","BlocksBoost","LuckyBoost"},
-   Callback = function(Value)
+local Shop_A1 = T2:AddDropdown("Select Item / shop item", function(Value)
        _G.ItemSelected = Value
-   end    
-})
+   end)
 
-T2:AddToggle({
-    Name = "Auto buy selected item",
-    Default = false,
-    Callback = function(Value)
+Shop_A1:Add("GemEgg")
+Shop_A1:Add("SpeedBoost")
+Shop_A1:Add("BlocksBoost")
+Shop_A1:Add("LuckyBoost")
+
+T2:AddSwitch("auto buy selected item", function(Value)
         _G.GItem = Value
         
         while _G.GItem do
@@ -117,13 +87,9 @@ T2:AddToggle({
 
 game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer(unpack(args))
         end
-   end    
-})
+   end)
 
-T2:AddToggle({
-    Name = "Auto buy all",
-    Default = false,
-    Callback = function(Value)
+T2:AddSwitch("auto buy all", function(Value)
         _G.GAll = Value
         
         while _G.Block do
@@ -134,5 +100,4 @@ game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("LuckyBoo
 game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("BlocksBoost")
 game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("SpeedBoost")
         end
-   end    
-})
+   end)

@@ -8,9 +8,35 @@ local Window = library:AddWindow("Orin - Cheat",
         toggle_key = Enum.KeyCode.RightShift,
     })
     
+    local EggIndex = {}
+    local workspace = game:GetService("Workspace")
+    for _,IndexPet in pairs(workspace.Eggs:GetChildren()) do
+          table.insert(EggIndex, IndexPet.Name)
+    end
+    
 local T1 = Window:AddTab("Farm")
 local T2 = Window:AddTab("Gems shop")
 local T3 = Window:AddTab("Misc")
+local T4 = Window:AddTab("Egg")
+local T5 = Window:AddTab("Stats")
+
+T5:AddLabel("Oops.. it seems that this tab is not accessible ☹️")
+
+local Shop_A2 = T4:AddDropdown("Select Egg", function(Value)
+       _G.EggSelected = Value
+   end)
+
+Shop_A2:Add(EggIndex)
+
+T4:AddSwitch("auto hatch", function(Value)
+        _G.EggHatch = Value
+        
+        while _G.EggHatch do
+        if _G.EggHatch == false then break end
+        wait(0)
+        game:GetService("ReplicatedStorage").RemoteEvents.EggOpen:InvokeServer(_G.EggSelected,"Single")
+        end
+   end)
 
 T1:AddSwitch("auto place block", function(Value)
         _G.Block = Value

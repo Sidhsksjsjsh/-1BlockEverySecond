@@ -36,7 +36,7 @@ local T3 = Window:AddTab("Misc")
 local T4 = Window:AddTab("Egg")
 local T5 = Window:AddTab("Stats")
 
-T5:AddLabel("Oops.. it seems that this tab is not accessible ☹️")
+-- T5:AddLabel("Oops.. it seems that this tab is not accessible ☹️")
 
 local TypicalItem = {
       EggGems = "GemEgg", -- 500
@@ -45,10 +45,14 @@ local TypicalItem = {
       Luck = "LuckyBoost" -- 400
 }
 
-local DisplayCost = T2:AddConsole({
+local DisplayCost = T5:AddConsole({
     ["y"] = 50,
     ["source"] = "",
 })
+
+
+
+
 
 function GetCostShop(ShopName)
 if ShopName == "GemEgg" then
@@ -174,7 +178,7 @@ T2:AddSwitch("auto buy selected item", function(Value)
         while _G.GItem do
         if _G.GItem == false then break end
         wait(0)
-        GetCostShop(_G.ItemSelected)
+        game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer(_G.ItemSelected)
         end
    end)
 
@@ -190,3 +194,7 @@ game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("BlocksBo
 game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("SpeedBoost")
         end
    end)
+
+while wait(0.5) do
+DisplayCost:Set("Blocks: " .. tostring(game.Players.LocalPlayer.leaderstats.Blocks.Value) .. "\nRebirths: " .. tostring(game.Players.LocalPlayer.leaderstats.Rebirths.Value) .. " \nGems: " .. tostring(game.Players.LocalPlayer.leaderstats.Gems.Value))
+end

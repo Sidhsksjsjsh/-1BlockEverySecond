@@ -14,6 +14,22 @@ local Window = library:AddWindow("Orin - Cheat",
           table.insert(EggIndex, IndexPet.Name)
     end
     
+    function GetHighDataStats(NumberStats, statsname)
+    if game.Players.LocalPlayer.leaderstats[statsname].Value > NumberStats then
+       return true
+    else
+       return false
+    end
+    end
+    
+    function GetLowDataStats(Stats_4, statsstring)
+    if game.Players.LocalPlayer.leaderstats[Stats_4].Value < statsstring then
+       return true
+    else
+       return false
+    end
+    end
+    
 local T1 = Window:AddTab("Farm")
 local T2 = Window:AddTab("Gems shop")
 local T3 = Window:AddTab("Misc")
@@ -21,6 +37,50 @@ local T4 = Window:AddTab("Egg")
 local T5 = Window:AddTab("Stats")
 
 T5:AddLabel("Oops.. it seems that this tab is not accessible ☹️")
+
+local TypicalItem = {
+      EggGems = "GemEgg", -- 500
+      Speed = "SpeedBoost", -- 1,000
+      Blocks = "BlocksBoost", -- 600
+      Luck = "LuckyBoost" -- 400
+}
+
+local DisplayCost = T2:AddConsole({
+    ["y"] = 50,
+    ["source"] = "",
+})
+
+function GetCostShop(ShopName)
+if ShopName == "GemEgg" then
+   if GetLowDataStats("Gems", 500) then
+       game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("GemEgg")
+   else
+       DisplayCost:Set("Not enough gems!")
+   end
+ end
+ if ShopName == "SpeedBoost" then
+   if GetLowDataStats("Gems", 1000) then
+       game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("SpeedBoost")
+   else
+       DisplayCost:Set("Not enough gems!")
+   end
+ end
+ if ShopName == "BlocksBoost" then
+   if GetLowDataStats("Gems", 600) then
+       game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("BlocksBoost")
+   else
+       DisplayCost:Set("Not enough gems!")
+   end
+ end
+ if ShopName == "LuckyBoost" then
+   if GetLowDataStats("Gems", 400) then
+       game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer("LuckyBoost")
+   else
+       DisplayCost:Set("Not enough gems!")
+   end
+ end
+ -- Function end
+end
 
 local Shop_A2 = T4:AddDropdown("Select Egg", function(Value)
        _G.EggSelected = Value
@@ -101,17 +161,20 @@ Shop_A1:Add("SpeedBoost")
 Shop_A1:Add("BlocksBoost")
 Shop_A1:Add("LuckyBoost")
 
+local TypicalItem = {
+      EggGems = "GemEgg",
+      Speed = "SpeedBoost",
+      Blocks = "BlocksBoost",
+      Luck = "LuckyBoost"
+}
+
 T2:AddSwitch("auto buy selected item", function(Value)
         _G.GItem = Value
         
         while _G.GItem do
         if _G.GItem == false then break end
         wait(0)
-        local args = {
-    [1] = _G.ItemSelected
-}
-
-game:GetService("ReplicatedStorage").Remotes.BuyGemShopItem:FireServer(unpack(args))
+        GetCostShop(_G.ItemSelected)
         end
    end)
 
